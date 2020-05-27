@@ -3,8 +3,8 @@ var todoForm = document.querySelector("#todo-form");
 var todoList = document.querySelector("#todo-list");
 var todoCountSpan = document.querySelector("#todo-count");
 
-var todos = ["Learn HTML", "Learn CSS", "Learn JavaScript"];
-
+var todos = JSON.parse(localStorage.getItem("todos")) || [];
+// redefined hard coded intial todos items to grab from localStorage instead.
 
 
 // Initially emptying the list every time we run "renderTodos"
@@ -35,13 +35,11 @@ function renderTodos() {
       // creating new variable todoIndex where the button click will target the PARENT element (which contains the data-index value, not the button itself, it has no data-index value) and retrieving its attribute "data-index".
     todos.splice(todoIndex, 1)  // google splice for syntax =D
     
+    // need this line so localstorage gets updated after clicking complete on an item and removing it, so when refreshed immediately afterwards, it is still recognized instead of reverting to when last item was added.
+    localStorage.setItem("todos", JSON.stringify(todos));
+    
     renderTodos();  // rerun to update the list display
     });
-    // ## Hint
-
-    // * You can use `setAttribute` for `data-index` and `splice` to remove your todo from the list.
-
-    // The new 'li' should be appended to the 'ul' provided.
 
     todoList.appendChild(li);
   }
@@ -58,10 +56,14 @@ todoForm.addEventListener("submit", function(event) {
   }
   todos.push(newTodoText);  // add todoInput.value, now revariabled to newTodoText, to the todos array
 
+  localStorage.setItem("todos", JSON.stringify(todos));
+  // setting the todos list to localstorage, then saving each item into a separate string item.
+
   // Once the value has been added to the array, clear the input field and re-render the todo list.
   todoInput.value = "";
   // rerender
   renderTodos();  // renderTodos() refers to initial function at beginning.
 });
+
 
 renderTodos();
