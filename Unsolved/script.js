@@ -21,4 +21,21 @@ function renderTodos() {
   }
 };
 
+// Add an event listener so that when a user hits enter, the value from the todo input field is pushed to our todo array.
+todoForm.addEventListener("submit", function(event) {
+  event.preventDefault();  // preventing auto refresh on submit
+  var newTodoText = todoInput.value;  // setting a new variable for todoinput.value to recall more easily, also optimizes performance
+
+  // Make sure that empty values are not pushed to the array.
+  if (todoInput.value === "") {
+    return;  // if input is blank.. return aka do nothing
+  }
+  todos.push(newTodoText);  // add todoInput.value, now revariabled to newTodoText, to the todos array
+  
+  // Once the value has been added to the array, clear the input field and re-render the todo list.
+  todoInput.value = "";
+  // rerender
+  renderTodos();  // renderTodos() refers to initial function at beginning.
+});
+
 renderTodos();
