@@ -5,6 +5,8 @@ var todoCountSpan = document.querySelector("#todo-count");
 
 var todos = ["Learn HTML", "Learn CSS", "Learn JavaScript"];
 
+
+
 // Initially emptying the list every time we run "renderTodos"
 function renderTodos() {
   todoList.innerHTML = "";
@@ -16,7 +18,31 @@ function renderTodos() {
     var li = document.createElement("li");
     // Creat an 'li' element for each index of the array.
     li.innerText = todos[i];  //  can also do li.textContent
+    
+    //   * When a new todo is created, add a `data-index` for each `li`.
+    li.setAttribute("data-index", i);
+
+    //   * Generate a button that says "Complete" and append it to your `li`.
+    var button = document.createElement("button");  // creating new button element.
+    button.textContent = "Complete";  // Set button text to the string "Complete"
+    li.appendChild(button);  // Adding the button variable to end of each li item.
+
+    // * Add an event listener so that when a user clicks the Complete button, it accesses the `data-index` value and removes that todo element from the list.
+    button.addEventListener("click", function(event) {
+      // Listen for clicks on each button... then...
+      // access the data-index value
+    var todoIndex = parseInt(event.target.parentElement.getAttribute("data-index"));
+      // creating new variable todoIndex where the button click will target the PARENT element (which contains the data-index value, not the button itself, it has no data-index value) and retrieving its attribute "data-index".
+    todos.splice(todoIndex, 1)  // google splice for syntax =D
+    
+    renderTodos();  // rerun to update the list display
+    });
+    // ## Hint
+
+    // * You can use `setAttribute` for `data-index` and `splice` to remove your todo from the list.
+
     // The new 'li' should be appended to the 'ul' provided.
+
     todoList.appendChild(li);
   }
 };
@@ -31,7 +57,7 @@ todoForm.addEventListener("submit", function(event) {
     return;  // if input is blank.. return aka do nothing
   }
   todos.push(newTodoText);  // add todoInput.value, now revariabled to newTodoText, to the todos array
-  
+
   // Once the value has been added to the array, clear the input field and re-render the todo list.
   todoInput.value = "";
   // rerender
